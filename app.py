@@ -90,6 +90,32 @@ weight = st.number_input(
     max_value=300.0,
     value=70.0
 )
+height = st.number_input(
+    "Height (cm)",
+    min_value=50.0,
+    max_value=250.0,
+    value=170.0
+)
+
+# BMI Calculation
+height_m = height / 100
+
+bmi = weight / (height_m ** 2)
+
+st.subheader("⚖️ Body Mass Index (BMI)")
+st.write(f"BMI: **{bmi:.2f}**")
+
+if bmi < 18.5:
+    st.info("BMI Category: Underweight")
+
+elif bmi < 25:
+    st.success("BMI Category: Normal Weight")
+
+elif bmi < 30:
+    st.warning("BMI Category: Overweight")
+
+else:
+    st.error("BMI Category: Obese")
 
 scr = st.number_input(
     "Serum Creatinine (mg/dL)",
