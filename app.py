@@ -242,6 +242,5 @@ if st.button("Calculate"):
     # ==========================
     st.markdown("---")
     st.caption(
-        "⚠ This software is for educational and research purposes only. "
-        "Always verify dosing recommendations using hospital guidelines or Lexicomp."
+        "DosePK version 1.0 | A Clinical Decision Support System for Renal Dose Optimization"
     )
