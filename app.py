@@ -2,11 +2,7 @@ import streamlit as st
 import pandas as pd
 from drug_database import get_drug_recommendation
 
-st.set_page_config(
-    page_title="DosePK",
-    page_icon="💊",
-    layout="wide"
-)
+
 
 
 
