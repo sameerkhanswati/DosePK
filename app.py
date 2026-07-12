@@ -7,6 +7,30 @@ st.set_page_config(
     layout="wide"
 )
 
+USERNAME = "harisaziz"
+PASSWORD = "avoidit"
+
+if "login" not in st.session_state:
+    st.session_state.login = False
+
+if not st.session_state.login:
+
+    st.title("🔐 DosePK Login")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+
+        if username == USERNAME and password == PASSWORD:
+            st.session_state.login = True
+            st.success("Login Successful")
+            st.rerun()
+
+        else:
+            st.error("❌ Invalid Username or Password")
+
+    st.stop()
 
 
 # Your pharmacy app starts below this line
