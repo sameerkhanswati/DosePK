@@ -158,6 +158,8 @@ def new_func(recommendation):
     return dose
 
 if st.button("Calculate"):
+    st.success("Button works!")
+    st.stop()
 
     # Cockcroft-Gault Formula
     if gender == "Male":
