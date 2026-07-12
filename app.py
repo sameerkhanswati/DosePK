@@ -158,8 +158,6 @@ def new_func(recommendation):
     return dose
 
 if st.button("Calculate"):
-    st.success("Button works!")
-    st.stop()
 
     # Cockcroft-Gault Formula
     if gender == "Male":
@@ -244,5 +242,5 @@ if st.button("Calculate"):
     # ==========================
     st.markdown("---")
     st.caption(
-        "DosePK version 1.0 | A Clinical Decision Support System for Renal Dose Optimization"
+        "DosePK version 1.0 | A Clinical Decision Support System For Renal Dose Optimization"
     )
