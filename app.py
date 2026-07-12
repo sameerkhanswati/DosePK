@@ -1,7 +1,57 @@
-from drug_database import get_drug_recommendation
 import streamlit as st
 import pandas as pd
+from drug_database import get_drug_recommendation
 
+st.set_page_config(
+    page_title="DosePK",
+    page_icon="💊",
+    layout="wide"
+)
+
+
+
+
+st.markdown("""
+<style>
+
+.main {
+    background-color:#f8fafc;
+}
+
+h1 {
+    color:#0f766e;
+    font-size:45px;
+}
+
+h2 {
+    color:#0369a1;
+}
+
+.stButton button {
+    width:100%;
+    height:50px;
+    background:#0f766e;
+    color:white;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.stButton button:hover {
+    background:#115e59;
+}
+
+
+[data-testid="stMetric"] {
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0px 4px 10px #ddd;
+}
+
+
+</style>
+""", unsafe_allow_html=True)
 # Test Login
 USERNAME = "harisaziz"
 PASSWORD = "avoidit"
@@ -11,6 +61,8 @@ if "login" not in st.session_state:
 
 
 if not st.session_state.login:
+
+    
 
     st.title("🔐 DosePK Login")
 
@@ -30,7 +82,13 @@ if not st.session_state.login:
 
 
     st.stop()
-
+st.markdown("""
+<style>
+.stApp{
+    background: #f8fafc;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Your pharmacy app starts below this line
 # ==========================
@@ -130,20 +188,36 @@ scr = st.number_input(
 # ==========================
 st.header("💊 Select Drug")
 
-# Read all drugs from Excel
+# Read Excel
 df = pd.read_excel("drugs.xlsx")
 
-# Remove duplicates and sort alphabetically
-drug_list = sorted(df["Drug"].unique())
+# Get categories
+category_list = sorted(df["Category"].dropna().unique())
+
+# Select category
+category = st.selectbox(
+    "Select Drug Category",
+    category_list
+)
+
+# Filter drugs according to category
+filtered_df = df[df["Category"] == category]
+
+# Drug list of selected category
+drug_list = sorted(filtered_df["Drug Name"].dropna().unique())
 
 drug = st.selectbox(
-    "Drug",
+    "Select Drug",
     drug_list
 )
 
 # ==========================
 # CALCULATE BUTTON
 # ==========================
+def new_func(recommendation):
+    dose = recommendation["Recommended Dose"]
+    return dose
+
 if st.button("Calculate"):
 
     # Cockcroft-Gault Formula
@@ -178,14 +252,23 @@ if st.button("Calculate"):
     # DOSE RECOMMENDATION
     # ==========================
     st.subheader("💊 Recommended Dose")
+    st.write("Selected Drug:", drug)
+    st.write("Calculated CrCl:", crcl)
 
     recommendation = get_drug_recommendation(drug, crcl)
+    st.write("Recommendation:", recommendation)
 
     if recommendation is not None:
         
-        dose = recommendation["Recommended_Dose"]
-        monitoring = recommendation["Monitoring"]
-        warning = recommendation["Warning"]
+        dose = new_func(recommendation)
+        monitoring = recommendation.get("Monitoring", "No monitoring information available.")
+        warning = recommendation.get("Warning / Notes", "No warning available.")
+
+        if pd.isna(monitoring):
+            monitoring = "No monitoring information available."
+
+        if pd.isna(warning):
+            warning = "No warning available."
 
         if str(dose) == "nan":
             dose = "Not Available"
@@ -207,13 +290,13 @@ if st.button("Calculate"):
     # MONITORING
     # ==========================
     st.subheader("🩸 Monitoring")
-    st.warning(f"⚠ {warning}")
 
-    st.info(f"""
-**Monitoring Required:**
+    with st.container(border=True):
+        st.markdown("### Monitoring Required")
+        st.write(monitoring)
 
-{monitoring}
-""")
+        st.markdown("### Warning / Notes")
+        st.write(warning)
 
     # ==========================
     # DISCLAIMER
