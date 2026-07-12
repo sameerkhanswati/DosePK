@@ -1,100 +1,19 @@
 import streamlit as st
 import pandas as pd
 from drug_database import get_drug_recommendation
+st.set_page_config(
+    page_title="DosePK",
+    page_icon="💊",
+    layout="wide"
+)
 
 
-
-
-
-
-st.markdown("""
-<style>
-
-.main {
-    background-color:#f8fafc;
-}
-
-h1 {
-    color:#0f766e;
-    font-size:45px;
-}
-
-h2 {
-    color:#0369a1;
-}
-
-.stButton button {
-    width:100%;
-    height:50px;
-    background:#0f766e;
-    color:white;
-    border-radius:10px;
-    font-size:18px;
-    font-weight:bold;
-}
-
-.stButton button:hover {
-    background:#115e59;
-}
-
-
-[data-testid="stMetric"] {
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0px 4px 10px #ddd;
-}
-
-
-</style>
-""", unsafe_allow_html=True)
-# Test Login
-USERNAME = "harisaziz"
-PASSWORD = "avoidit"
-
-if "login" not in st.session_state:
-    st.session_state.login = False
-
-
-if not st.session_state.login:
-
-    
-
-    st.title("🔐 DosePK Login")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-
-    if st.button("Login"):
-
-        if username == USERNAME and password == PASSWORD:
-            st.session_state.login = True
-            st.success("Login Successful")
-            st.rerun()
-
-        else:
-            st.error("Invalid Username or Password")
-
-
-    st.stop()
-st.markdown("""
-<style>
-.stApp{
-    background: #f8fafc;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # Your pharmacy app starts below this line
 # ==========================
 # PAGE CONFIGURATION
 # ==========================
-st.set_page_config(
-    page_title="DosePK",
-    page_icon="💊",
-    layout="centered"
-)
+
 
 # ==========================
 # SIDEBAR
